@@ -22,13 +22,13 @@ const fetchInfo = (async () => {
     {#if !data.detail}
         <div class="card">
             <img class="icon" src="https://{data.site}/favicon.ico" alt="{data.site}">
-            <small class="url">{data.url}</small>
+            <small class="url"><a href="{data.url}">{data.url}</a></small>
             <h3> {data.title} </h3>
             <img src="{data.thumbUrl}" alt="{data.title}">
         </div>
     {/if}
 {:catch error}
-	<p>An error occurred! {error}</p>
+	<p class="red">An error occurred! {error}</p>
 {/await}
 
 <style>
@@ -43,7 +43,7 @@ const fetchInfo = (async () => {
     }
     .icon{
         display: inline;
-        width: 16px;
+        width: 18px;
         height: 16px;
     }
     .red{

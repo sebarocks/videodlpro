@@ -1,6 +1,5 @@
 <script>
-import UrlField from './lib/UrlField.svelte';
-import VideoCard from './lib/VideoCard.svelte';
+import ProgressBar from './lib/ProgressBar.svelte';
 
 let videos = [];
 
@@ -17,12 +16,14 @@ function addUrl(ev){
   </div>
   <h1>Video-DL Pro</h1>
 
-  <div class="urlfield">
+  <ProgressBar/>
+
+  <!-- <div class="urlfield">
     <UrlField on:addedUrl={addUrl}/>    
   </div>
   {#each videos as vidUrl}
     <VideoCard url={vidUrl}/>
-  {/each}
+  {/each} -->
 
 </main>
 

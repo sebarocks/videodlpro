@@ -1,44 +1,35 @@
 
 from fastapi import FastAPI, HTTPException
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-from pydantic import BaseModel
-from downloader import Downloader
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.wsgi import WSGIMiddleware
 
-origins = [
-    "http://127.0.0.1:5173",
-]
+from fastapi_socketio import SocketManager
 
-class VideoInfo(BaseModel):
-    title: str
-    thumbUrl: str
-    url: str
-    site: str    
-
-class DownloadFile(BaseModel):
-    filename: str
-    hash: str
-
-class VideoUrl(BaseModel):
-    url: str
-
+from downloader import Downloader
+from models import VideoInfo, VideoUrl
 
 app = FastAPI()
-ydl = Downloader()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins="*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# @app.post("/download")
-# async def downloadUrl(url : str):
-#     ydl.download([url])
-#     return url
+app.mount("/downloads", StaticFiles(directory="downloads"), name="downloads")
+
+sm = SocketManager(app=app,cors_allowed_origins=[],socketio_path= '')
+ydl = Downloader()
+
+@app.post("/download")
+async def downloadUrl(vidUrl : VideoUrl):
+    filename = ydl.getFilename(vidUrl.url)
+    res = ydl.download([vidUrl.url])
+    print(res)
+    return filename
 
 @app.post("/info")
 async def infoUrl(vidUrl : VideoUrl):
@@ -51,16 +42,19 @@ async def infoUrl(vidUrl : VideoUrl):
             title = info['title'],
             thumbUrl = info['thumbnail'],
             site = info['webpage_url_domain'],
-            url = info['webpage_url'])
+            url = info['webpage_url']
+        )
 
-@app.get("/infotest")
-async def infoUrl():
-    urlTest = 'https://www.youtube.com/watch?v=Y1zl6WgZSAw'
-    return ydl.getInfoSanatized(urlTest)
+@app.sio.on('msg')
+async def handle_join(sid, data):
+    print(f"msg: {data}")
+
+@app.sio.on('download')
+async def handle_join(sid, data):
+    print(f"download: {data}")
+    filename = ydl.getFilename(data)
+    res = ydl.download(data)
+    sm.emit('finished',filename)
 
 
-app.mount("/downloads", StaticFiles(directory="downloads"), name="downloads")
 
-@app.get("/file/{id}")
-async def hashes(id):
-    return FileResponse(id)
