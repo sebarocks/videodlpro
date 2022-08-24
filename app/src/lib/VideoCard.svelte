@@ -1,4 +1,6 @@
 <script>
+import DownloadBar from "./DownloadBar.svelte";
+
 
 export let url;
 
@@ -25,6 +27,7 @@ const fetchInfo = (async () => {
             <small class="url"><a href="{data.url}">{data.url}</a></small>
             <h3> {data.title} </h3>
             <img src="{data.thumbUrl}" alt="{data.title}">
+            <DownloadBar url={data.url} />
         </div>
     {/if}
 {:catch error}

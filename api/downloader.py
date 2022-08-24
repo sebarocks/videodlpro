@@ -1,5 +1,4 @@
 from yt_dlp import YoutubeDL
-import asyncio
 
 
 def my_hook(d):
