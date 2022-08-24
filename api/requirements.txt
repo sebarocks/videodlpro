@@ -1,0 +1,4 @@
+fastapi
+yt_dlp
+fastapi_socketio
+uvicorn[standard]
