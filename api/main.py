@@ -22,10 +22,11 @@ app.add_middleware(
 app.mount("/downloads", StaticFiles(directory="downloads"), name="downloads")
 
 sm = SocketManager(app=app,cors_allowed_origins=[],socketio_path= '')
-ydl = Downloader()
+
 
 @app.post("/download")
 async def downloadUrl(vidUrl : VideoUrl):
+    ydl = Downloader()
     filename = ydl.getFilename(vidUrl.url)
     res = ydl.download([vidUrl.url])
     print(res)
@@ -34,6 +35,7 @@ async def downloadUrl(vidUrl : VideoUrl):
 @app.post("/info")
 async def infoUrl(vidUrl : VideoUrl):
     url = vidUrl.url
+    ydl = Downloader()
     info = ydl.getInfo(url)
     if info is None:
         raise HTTPException(status_code=404, detail="URL not supported")
@@ -51,10 +53,14 @@ async def handle_join(sid, data):
 
 @app.sio.on('download')
 async def handle_join(sid, data):
-    print(f"download: {data}")
+    print(f"Download requested: {data}")
+
+    ydl = Downloader()
+
     filename = ydl.getFilename(data)
     res = ydl.download(data)
-    sm.emit('finished',filename)
+    
+    await sm.emit('finished',filename)
 
 
 
