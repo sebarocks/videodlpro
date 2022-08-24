@@ -1,5 +1,7 @@
 <script>
 import ProgressBar from './lib/ProgressBar.svelte';
+import UrlField from './lib/UrlField.svelte';
+import VideoCard from './lib/VideoCard.svelte';
 
 let videos = [];
 
@@ -18,12 +20,12 @@ function addUrl(ev){
 
   <ProgressBar/>
 
-  <!-- <div class="urlfield">
+  <div class="urlfield">
     <UrlField on:addedUrl={addUrl}/>    
   </div>
   {#each videos as vidUrl}
     <VideoCard url={vidUrl}/>
-  {/each} -->
+  {/each}
 
 </main>
 
