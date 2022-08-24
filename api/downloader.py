@@ -1,30 +1,18 @@
 from yt_dlp import YoutubeDL
-
-class MyLogger():
-    def __init__(self) -> None:
-        self.last = None
-
-    def debug(self, msg):
-        print('i: '+msg)
-
-    def warning(self, msg):
-        pass
-
-    def error(self, msg):
-        pass
-            
+import asyncio
 
 
 def my_hook(d):
-    print(d['status'])
+    print('\n%> '+d['_percent_str'])
+    print('\nstr> '+d['_default_template'])
 
 def my_post_hook(d):
-    print(d['info_dict']['_filename'])
+    print('<X>'+d['info_dict']['_filename'])
 
 ydl_opts = {      
     'outtmpl': './downloads/%(id)s.%(extractor)s.%(ext)s',      
-    'progress_hooks': [my_hook],
-    'postprocessor_hooks': [my_post_hook]
+    #'progress_hooks': [my_hook],
+    #'postprocessor_hooks': [my_post_hook]
 }
 
 
@@ -58,9 +46,6 @@ class Downloader(YoutubeDL):
             return self.download([url])
         except:
             return -1
-    
-    def setLogger(self, logger):
-        self.params['logger'] = logger
 
 
 if __name__ == "__main__":
