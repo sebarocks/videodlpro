@@ -1,17 +1,37 @@
+from datetime import datetime
 from yt_dlp import YoutubeDL
+
+# dict_keys(['status', 'downloaded_bytes', 'total_bytes', 'tmpfilename', 'filename', 'eta', 'speed', 'elapsed', 'ctx_id', 'info_dict', '_eta_str',
+#           '_speed_str', '_percent_str', '_total_bytes_str', '_total_bytes_estimate_str', '_downloaded_bytes_str', '_elapsed_str', '_default_template'])
+
+def processHookInfo(d):
+    info={
+        "status": d['status'],
+        "downloaded_bytes": d['downloaded_bytes'],
+        "total_bytes": d['total_bytes'],
+        "filename": d['filename'].split("\\")[-1],
+    }
+    return info
 
 
 def my_hook(d):
-    print('\n%> '+d['_percent_str'])
-    print('\nstr> '+d['_default_template'])
+    #print(d.keys())
+    print(d['status'])
+    print(d['downloaded_bytes'])
+    print(d['total_bytes'])
+    print(d['filename'])
+    print(datetime.now().time())
+    
 
 def my_post_hook(d):
     print('<X>'+d['info_dict']['_filename'])
 
-ydl_opts = {      
-    'outtmpl': './downloads/%(id)s.%(extractor)s.%(ext)s',      
-    #'progress_hooks': [my_hook],
-    #'postprocessor_hooks': [my_post_hook]
+ydl_opts = {
+    'outtmpl': './downloads/%(id)s.%(extractor)s.%(ext)s',
+    'quiet': False,
+    'no_color': True
+    # 'progress_hooks': [my_hook],
+    # 'postprocessor_hooks': [my_post_hook]
 }
 
 
@@ -26,11 +46,11 @@ class Downloader(YoutubeDL):
         except:
             return None
         return info
-    
+
     def getInfo(self, url):
         return self.tryInfo(url)
 
-    def getInfoSanitized(self,url):
+    def getInfoSanitized(self, url):
         info = self.tryInfo(url)
         return self.sanitize_info(info)
 
@@ -50,4 +70,7 @@ class Downloader(YoutubeDL):
 if __name__ == "__main__":
     yee = 'https://www.youtube.com/watch?v=q6EoRBvdVPQ'
     ydl = Downloader()
+    ydl.add_progress_hook(my_hook)
     download = ydl.download
+
+
