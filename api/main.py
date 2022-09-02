@@ -4,6 +4,7 @@ import asyncio
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from fastapi_socketio import SocketManager
 
@@ -21,7 +22,8 @@ api.add_middleware(
     allow_headers=["*"],
 )
 
-api.mount("/downloads", StaticFiles(directory="downloads"), name="downloads")
+api.mount("/files", StaticFiles(directory="downloads"), name="downloads")
+
 
 sm = SocketManager(app=api, cors_allowed_origins=[], socketio_path='')
 pt = ProgressTracker()
@@ -103,3 +105,11 @@ async def handle_join(sid, data):
     print(res)
     await sm.emit(f"finished.{dl_id}", filename)
     #print(f"emit finished.{dl_id}")
+
+
+app = FastAPI()
+app.mount("/api",api)
+
+# Correr build con /index.html
+#app.mount("/", StaticFiles(directory="../app/build"), name="site")
+

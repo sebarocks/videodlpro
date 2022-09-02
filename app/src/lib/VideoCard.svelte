@@ -1,11 +1,11 @@
 <script>
 import DownloadBar from "./DownloadBar.svelte";
-
+import { env } from '$env/dynamic/public';
 
 export let url;
 
 const fetchInfo = (async () => {
-    const response = await fetch("http://localhost:8000/info",{
+    const response = await fetch(`${env.PUBLIC_API_URL}/api/info`,{
         method: 'POST',
         headers: {
             "Content-type": "application/json",

@@ -1,12 +1,12 @@
 <script>
 import socket from '$lib/downloader.js';
 import { writable } from 'svelte/store';
+import { env } from '$env/dynamic/public';
 
 const progress = writable(0);
 
 export let url;
 
-const BASE_URL = "http://localhost:8000";
 
 let status = "ready";
 var download_id = Date.now();
@@ -60,7 +60,7 @@ function requestDownload(ev) {
         <progress value={$progress}></progress>        
     {:else if status == "finished"}
         <p class="infomini">{status} {download_filename}</p>
-        <a href={BASE_URL + "/downloads/" + download_filename} download target="_blank"><button>Descargar</button></a>
+        <a href={env.PUBLIC_API_URL +"/api/files/" + download_filename} download target="_blank"><button>Descargar</button></a>
     {/if}
 </div>
 

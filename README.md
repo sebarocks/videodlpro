@@ -6,7 +6,7 @@
 
 `pip install -r requirements.txt`
 
-`uvicorn main:api`
+`uvicorn main:app`
 
 ## Node.js (npm)
 
