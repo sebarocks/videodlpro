@@ -26,6 +26,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"bulma": "^0.9.4",
 		"socket.io-client": "^4.5.1"
 	}
 }
