@@ -24,6 +24,7 @@ socket.on(`finished.${download_id}`, (filename) => {
     clearInterval(intervalQuery);
     status = "finished";
     download_filename = filename;
+    socket.disconnect()
 });
 
 socket.on(`progress.${download_id}`, (data) => {
