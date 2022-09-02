@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 
 class VideoInfo(BaseModel):
@@ -14,3 +15,14 @@ class ProgressInfo(BaseModel):
     status : str
     percentage : float
     filename : str
+
+class FormatInfo(BaseModel):
+    format_id: str
+    ext: str
+    resolution: str
+    fps: Optional[str]
+    filesize: Optional[int]
+    tbr: Optional[float]
+    vcodec: str
+    acodec: str
+    format_note: str

@@ -9,7 +9,7 @@ from fastapi_socketio import SocketManager
 
 from progress import ProgressTracker
 from downloader import Downloader, processHookInfo
-from models import VideoInfo, VideoUrl
+from models import VideoInfo, VideoUrl, FormatInfo
 
 api = FastAPI()
 
@@ -34,6 +34,24 @@ async def downloadUrl(vidUrl: VideoUrl):
     print(res)
     return filename
 
+@api.post("/mp3")
+async def downloadMp3(vidUrl: VideoUrl):
+    ydl = Downloader()
+    filename = ydl.getFilename(vidUrl.url)
+    ydl.mp3Mode()
+    res = ydl.download([vidUrl.url])
+    print(res)
+    return filename
+
+@api.post("/formats")
+async def formatsUrl(vidUrl: VideoUrl):
+    url = vidUrl.url
+    ydl = Downloader()
+    info = ydl.getFormats(url)
+    if info is None:
+        raise HTTPException(status_code=404, detail="URL not supported")
+    else:
+        return info
 
 @api.post("/info")
 async def infoUrl(vidUrl: VideoUrl):
@@ -53,7 +71,7 @@ async def infoUrl(vidUrl: VideoUrl):
 
 @api.sio.on('queryprogress')
 async def handle_join(sid, data):
-    print(f"query: {data}")
+    #print(f"query: {data}")
     dl_id = int(data)
     res = {
         "status": pt.getStatus(dl_id),

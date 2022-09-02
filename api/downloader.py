@@ -1,5 +1,7 @@
 from datetime import datetime
 from yt_dlp import YoutubeDL
+from models import FormatInfo
+from yt_dlp.postprocessor.ffmpeg import FFmpegExtractAudioPP
 
 # dict_keys(['status', 'downloaded_bytes', 'total_bytes', 'tmpfilename', 'filename', 'eta', 'speed', 'elapsed', 'ctx_id', 'info_dict', '_eta_str',
 #           '_speed_str', '_percent_str', '_total_bytes_str', '_total_bytes_estimate_str', '_downloaded_bytes_str', '_elapsed_str', '_default_template'])
@@ -28,10 +30,8 @@ def my_post_hook(d):
 
 ydl_opts = {
     'outtmpl': './downloads/%(id)s.%(extractor)s.%(ext)s',
-    'quiet': False,
+    'quiet': True,
     'no_color': True
-    # 'progress_hooks': [my_hook],
-    # 'postprocessor_hooks': [my_post_hook]
 }
 
 
@@ -66,11 +66,29 @@ class Downloader(YoutubeDL):
         except:
             return -1
 
+    def getFormats(self,url):
+        info = self.getInfo(url)
+        formats = []
+        if info is not None:
+            for fmt in info['formats']:
+                fi = FormatInfo.parse_obj(fmt)
+                formats.append(fi)
+            return formats
+        else:
+            return None
+
+    def pickFormat(self,format_id):
+        self.format_selector = self.build_format_selector(format_id)
+
+    def mp3Mode(self):
+        self.add_post_processor(FFmpegExtractAudioPP(preferredcodec='mp3'))
+
 
 if __name__ == "__main__":
     yee = 'https://www.youtube.com/watch?v=q6EoRBvdVPQ'
     ydl = Downloader()
-    ydl.add_progress_hook(my_hook)
+    #ydl.add_progress_hook(my_hook)
     download = ydl.download
+
 
 
