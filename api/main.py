@@ -55,13 +55,13 @@ async def infoUrl(vidUrl: VideoUrl):
 async def handle_join(sid, data):
     print(f"query: {data}")
     dl_id = int(data)
-    print(type(dl_id))
     res = {
         "status": pt.getStatus(dl_id),
         "percentage": pt.getPercentage(dl_id),
         "filename": pt.getFilename(dl_id)
     }
-    await sm.emit('progress', res)
+    await sm.emit(f"progress.{dl_id}", res)
+    #print(f"emit progress.{dl_id}")
 
 @api.sio.on('download')
 async def handle_join(sid, data):
@@ -83,4 +83,5 @@ async def handle_join(sid, data):
     loop = asyncio.get_event_loop()
     res = await loop.run_in_executor(None, ydl.download, url)
     print(res)
-    await sm.emit('finished', filename)
+    await sm.emit(f"finished.{dl_id}", filename)
+    #print(f"emit finished.{dl_id}")

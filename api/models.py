@@ -8,3 +8,9 @@ class VideoInfo(BaseModel):
 
 class VideoUrl(BaseModel):
     url: str
+
+class ProgressInfo(BaseModel):
+    download_id : int
+    status : str
+    percentage : float
+    filename : str
