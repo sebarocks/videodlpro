@@ -4,11 +4,16 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/logo.png" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="stylesheet" href="/css/main.css">
 		<link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css">
+		<style>
+			body {		
+				display: flex;
+				justify-content: center;
+			}
+		</style>
 		%sveltekit.head%
 	</head>
-	<body>
-		<div id="app">%sveltekit.body%</div>
+	<body>		
+		%sveltekit.body%
 	</body>
 </html>

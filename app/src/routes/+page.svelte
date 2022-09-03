@@ -29,7 +29,6 @@
 <style>
 	.logo {
 		height: 10em;
-		padding: 0.5em;
 		will-change: filter;
 	}
 	.logo:hover {
@@ -38,4 +37,14 @@
 	.urlfield {
 		width: 30rem;
 	}
+
+	h1 {
+		font-size: 3em;
+		line-height: 1;
+	}
+	main {
+		flex-direction: row;
+		justify-content: center;
+	}
+
 </style>
