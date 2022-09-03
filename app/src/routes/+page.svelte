@@ -12,39 +12,47 @@
 
 
 <main>
-	<div>
-		<img src="/logo.png" class="logo" alt="YT Logo" />
-	</div>
-	<h1>Video-DL Pro</h1>
+	
+	<img src="/logo.png" class="logo" alt="YT Logo" />
+	<h1 class="title">Video-DL Pro</h1>
+	
 
-	<div class="urlfield">
+	<div class="field">
 		<UrlField on:addedUrl={addUrl} />
 	</div>
 
+	<div class="video-list">
 	{#each videos as vidUrl}
 		<VideoCard url={vidUrl} />
 	{/each}
+	</div>
+
 </main>
 
 <style>
 	.logo {
-		height: 10em;
+		height: 12rem;
+		width: 12rem;
 		will-change: filter;
 	}
 	.logo:hover {
 		filter: drop-shadow(0 0 2em #12ea85aa);
 	}
-	.urlfield {
-		width: 30rem;
+
+	h1  {
+		padding: 1rem;
+		font-size: 2.5rem;
 	}
 
-	h1 {
-		font-size: 3em;
-		line-height: 1;
-	}
 	main {
-		flex-direction: row;
-		justify-content: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 30rem;
+	}
+	
+	.field, .video-list {
+		width: 100%;
 	}
 
 </style>

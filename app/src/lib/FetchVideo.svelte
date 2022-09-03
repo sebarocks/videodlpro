@@ -1,7 +1,6 @@
 <script>
 import DownloadBar from "./DownloadBar.svelte";
 import { env } from '$env/dynamic/public';
-import VideoCardInfo from "./VideoCardInfo.svelte";
 
 export let url;
 
@@ -27,7 +26,11 @@ const fetchInfo = (async () => {
 {:then data}
 
     {#if !data.detail}
-    <VideoCardInfo {data}/>
+        <img class="icon" src="https://{data.site}/favicon.ico" alt="{data.site}">
+        <small class="url"><a href="{data.url}">{data.url}</a></small>
+        <h3> {data.title} </h3>
+        <img src="{data.thumbUrl}" alt="{data.title}">
+        <DownloadBar url={data.url} />
     {/if}
 
 {:catch error}

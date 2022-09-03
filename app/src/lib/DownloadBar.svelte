@@ -20,15 +20,12 @@ let progressData = {
 }
 
 socket.on(`finished.${download_id}`, (filename) => {
-    console.log(`finished ${filename}`);
     clearInterval(intervalQuery);
     status = "finished";
     download_filename = filename;
-    socket.disconnect()
 });
 
 socket.on(`progress.${download_id}`, (data) => {
-    //console.log(`progress-${download_id}`);
     progressData = data;
     progress.set(data.percentage/100);
 });
@@ -36,38 +33,37 @@ socket.on(`progress.${download_id}`, (data) => {
 
 function askProgress() {
     socket.emit('queryprogress', download_id);
-    //console.log(`queryprogress ${download_id}`);
 }
 
 function requestDownload(ev) {
-    
-    ev.preventDefault();
     status = "downloading";
     socket.emit("download", {
         "url": url,
         "download_id": download_id
-    });    
-    console.log("request download " + url);
+    });
     askProgress();
     intervalQuery = setInterval(askProgress,250);        
 }
 </script>
 
-<div>
+<div class="downloadbar">
     {#if status == "ready"}
-        <button on:click={requestDownload}>Download</button>
+        <button class="button is-success" type="button" on:click={requestDownload}>Download</button>
     {:else if status == "downloading"}
-        <p class="infomini">{progressData.status} {progressData.filename} {Math.round(progressData.percentage,2)}%</p>
-        <progress value={$progress}></progress>        
+        <small class="barinfo">{progressData.status} {progressData.filename} {Math.round(progressData.percentage,2)}%</small>
+        <progress class="progress is-success" value={$progress}></progress>        
     {:else if status == "finished"}
-        <p class="infomini">{status} {download_filename}</p>
-        <a href={env.PUBLIC_API_URL +"/api/files/" + download_filename} download target="_blank"><button>Descargar</button></a>
+        <small class="barinfo">{status} {download_filename}</small>
+        <a href={env.PUBLIC_API_URL +"/api/files/" + download_filename} download target="_blank"><button class="button is-success">Descargar</button></a>
     {/if}
 </div>
 
-
 <style>
-    .infomini {
-        font-size: 14px;
-    }
+.downloadbar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: stretch;
+}
+
 </style>
