@@ -4,10 +4,28 @@
 
 	let videos = [];
 
-	function addUrl(ev) {
-		console.log(`Se agrego ${ev.detail}`);
-		videos = [...videos, ev.detail];
+	function newCardId(){
+		if(videos.length > 0){
+			return videos[videos.length - 1].id + 1;
+		}
+		return 1;
 	}
+
+	function addUrl(ev) {
+		console.log(`Se agrego url ${ev.detail}`);
+		let newVideo = {
+			url: ev.detail,
+			id: newCardId()
+		}
+		videos = [...videos, newVideo];
+	}
+
+	function removeVideo(ev){
+		console.log(`Se elimino tarjeta ${ev.detail}`);
+		let idRem = ev.detail;
+		videos = videos.filter( vid => vid.id != idRem);
+	}
+
 </script>
 
 
@@ -15,15 +33,14 @@
 	
 	<img src="/logo.png" class="logo" alt="YT Logo" />
 	<h1 class="title">Video-DL Pro</h1>
-	
 
 	<div class="field">
 		<UrlField on:addedUrl={addUrl} />
 	</div>
 
 	<div class="video-list">
-	{#each videos as vidUrl}
-		<VideoCard url={vidUrl} />
+	{#each videos as vid (vid.id)}
+		<VideoCard url={vid.url} card_id={vid.id} on:popCard={removeVideo}/>
 	{/each}
 	</div>
 

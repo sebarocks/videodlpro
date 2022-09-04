@@ -1,38 +1,50 @@
 <script>
-    export let data;
+    
     import DownloadBar from "./DownloadBar.svelte";
     import {slide} from "svelte/transition";
 
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
+
     let cardOpen = true;
 
+    export let data;
+    export let card_id;
+    
 </script>
 
-<div class="card"></div>
 <header class="card-header">
 	<p class="card-header-title">
         <img class="icon" src="https://{data.site}/favicon.ico" alt="{data.site}">
 		{data.title}
 	</p>
-	<button class="card-header-icon" aria-label="more options" type="button" on:click={() => cardOpen = !cardOpen}>
+	<button class="card-header-icon" type="button" on:click={() => cardOpen = !cardOpen}>
 		<span class="icon">
-			<i class="fas fa-angle-{cardOpen ? 'up' : 'down'}" aria-hidden="true" />
+			<i class="fas fa-angle-{cardOpen ? 'up' : 'down'}"/>
+		</span>
+	</button>
+    <button class="card-header-icon" type="button" on:click={() => dispatch('popCard',card_id)} >
+		<span class="icon">
+			<i class="fas fa-close"/>
 		</span>
 	</button>
 </header>
 {#if cardOpen}
-<div class="card-content" transition:slide>
-    <figure class="thumbnail">
-        <img src="{data.thumbUrl}" alt="{data.site} video - {data.title}">
-    </figure>
-    <div class="details">
-        <small><a href="{data.url}">{data.url}</a></small>
-        <p> {data.title} </p>
+<div transition:slide>
+    <div class="card-content" >
+        <figure class="thumbnail">
+            <img src="{data.thumbUrl}" alt="{data.site} video - {data.title}">
+        </figure>
+        <div class="details">
+            <small><a href="{data.url}">{data.url}</a></small>
+            <p> {data.title} </p>
+        </div>
     </div>
+    <footer class="card-footer">
+        <DownloadBar url={data.url} />
+    </footer>
 </div>
 {/if}
-<footer class="card-footer">
-    <DownloadBar url={data.url} />
-</footer>
 
 <style>
 
@@ -49,7 +61,9 @@
     }
 
     .card-header-title{
-        text-overflow: ellipsis;
+        overflow: hidden hidden;
+        white-space: nowrap;        
+        text-overflow: '...';
     }
 
     .thumbnail > img {

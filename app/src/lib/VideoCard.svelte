@@ -2,8 +2,11 @@
 import DownloadBar from "./DownloadBar.svelte";
 import { env } from '$env/dynamic/public';
 import VideoCardInfo from "./VideoCardInfo.svelte";
+import VideoCardWaiting from "./VideoCardWaiting.svelte";
+import VideoCardError from "./VideoCardError.svelte";
 
 export let url;
+export let card_id;
 
 const fetchInfo = (async () => {
     const response = await fetch(`${env.PUBLIC_API_URL}/api/info`,{
@@ -22,35 +25,23 @@ const fetchInfo = (async () => {
 <div class="card">
 {#await fetchInfo}
 
-    <p>...Waiting</p>
+    <VideoCardWaiting />
 
 {:then data}
 
     {#if !data.detail}
-    <VideoCardInfo {data}/>
+    <VideoCardInfo on:popCard {data} {card_id}/>
     {/if}
 
 {:catch error}
 
-	<p class="red">An error occurred! {error}</p>
+    <VideoCardError on:popCard {error} {card_id}/>
     
 {/await}
 </div>
 
 <style>
-
-    img {
-        height: 10em;
-    }
-    .icon{
-        display: inline;
-        width: 18px;
-        height: 16px;
-    }
-    .red{
-        color:red;
-    }
-    .url{
-        font-style: italic;
+    .card{
+        margin-bottom: 1rem;
     }
 </style>
