@@ -97,17 +97,22 @@ async def handle_join(sid, data):
         pt.loadHookInfo(dl_id,processHookInfo(d))
 
     ydl = Downloader()
+
     if data.get('mp3'):
         ydl.mp3Mode()
-        filename = ydl.getFilenameMp3(url)  
+        ext='mp3'
     else:
-        filename = ydl.getFilename(url)
+        ext = None
 
     ydl.add_progress_hook(temphook)
 
     loop = asyncio.get_event_loop()
-    res = await loop.run_in_executor(None, ydl.download, url)
-    print(res)
+    res = await loop.run_in_executor(None, ydl.extract_info, url)
+    
+    ext = res['ext'] if ext is None else ext
+    filename = f"{res['id']}.{res['extractor']}.{ext}"
+
+    print(filename)
     await sm.emit(f"finished.{dl_id}", filename)
     #print(f"emit finished.{dl_id}")
 
