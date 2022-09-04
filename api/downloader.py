@@ -60,6 +60,12 @@ class Downloader(YoutubeDL):
             return ""
         return f"{info['id']}.{info['extractor']}.{info['ext']}"
 
+    def getFilenameMp3(self, url):
+        info = self.tryInfo(url)
+        if info is None:
+            return ""
+        return f"{info['id']}.{info['extractor']}.mp3"
+
     def tryDownload(self, url):
         try:
             return self.download([url])

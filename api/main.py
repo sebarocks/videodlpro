@@ -97,7 +97,12 @@ async def handle_join(sid, data):
         pt.loadHookInfo(dl_id,processHookInfo(d))
 
     ydl = Downloader()
-    filename = ydl.getFilename(url)
+    if data.get('mp3'):
+        ydl.mp3Mode()
+        filename = ydl.getFilenameMp3(url)  
+    else:
+        filename = ydl.getFilename(url)
+
     ydl.add_progress_hook(temphook)
 
     loop = asyncio.get_event_loop()
