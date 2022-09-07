@@ -11,6 +11,7 @@
 	var download_id = Date.now();
 	let download_filename;
 	let intervalQuery;
+	let saved = false;
 
 	let progressData = {
 		status: 'ready',
@@ -75,7 +76,13 @@
 		<small class="barinfo">{status} {download_filename}</small>
 		<a href={env.PUBLIC_API_URL + '/api/files/' + download_filename} 
             download target="_blank">
-            <button class="button is-link">Guardar</button>
+            <button class="button" class:is-link={!saved} class:is-light={saved} on:click={()=>saved=true}>
+				{#if saved}
+					Guardado
+				{:else}
+					Guardar
+				{/if}
+			</button>
         </a>
 	{/if}
 </div>
