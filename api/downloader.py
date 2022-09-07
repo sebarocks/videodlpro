@@ -9,8 +9,8 @@ from yt_dlp.postprocessor.ffmpeg import FFmpegExtractAudioPP
 def processHookInfo(d):
     info={
         "status": d.get('status'),
-        "downloaded_bytes": d.get('downloaded_bytes'),
-        "total_bytes": d.get('total_bytes'),
+        "downloaded_bytes": d.get('downloaded_bytes',0),
+        "total_bytes": d.get('total_bytes',1),
         "filename": d.get('filename','.\\').split("\\")[-1],
     }
     return info

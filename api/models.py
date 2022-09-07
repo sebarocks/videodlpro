@@ -26,3 +26,9 @@ class FormatInfo(BaseModel):
     vcodec: str
     acodec: str
     format_note: str
+
+class VideoProgress(BaseModel):
+    url : str
+    status : str
+    percentage : str
+    filename : str
