@@ -30,21 +30,19 @@
 	</button>
 </header>
 {#if cardOpen}
-<div transition:slide>
-    <div class="card-content" >
-        <figure class="thumbnail">
-            <img src="{data.thumbUrl}" alt="{data.site} video - {data.title}">
-        </figure>
-        <div class="details">
-            <small><a href="{data.url}">{data.url}</a></small>
-            <p> {data.title} </p>
-        </div>
+<div class="card-content" transition:slide>
+    <figure class="thumbnail">
+        <img src="{data.thumbUrl}" alt="{data.site} video - {data.title}">
+    </figure>
+    <div class="details">
+        <small><a href="{data.url}">{data.url}</a></small>
+        <p> {data.title} </p>
     </div>
-    <footer class="card-footer">
-        <DownloadBar url={data.url} />
-    </footer>
 </div>
 {/if}
+<footer class="card-footer">
+    <DownloadBar url={data.url} />
+</footer>
 
 <style>
 
