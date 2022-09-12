@@ -16,18 +16,6 @@ def processHookInfo(d):
     return info
 
 
-def my_hook(d):
-    #print(d.keys())
-    print(d['status'])
-    print(d['downloaded_bytes'])
-    print(d['total_bytes'])
-    print(d['filename'])
-    print(datetime.now().time())
-    
-
-def my_post_hook(d):
-    print('<X>'+d['info_dict']['_filename'])
-
 ydl_opts = {
     'outtmpl': './downloads/%(id)s.%(extractor)s.%(ext)s',
     'quiet': True,
@@ -94,8 +82,6 @@ class Downloader(YoutubeDL):
 if __name__ == "__main__":
     yee = 'https://www.youtube.com/watch?v=q6EoRBvdVPQ'
     ydl = Downloader()
-    #ydl.add_progress_hook(my_hook)
-    download = ydl.download
 
 
 
