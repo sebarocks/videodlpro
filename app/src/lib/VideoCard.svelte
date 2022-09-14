@@ -1,9 +1,10 @@
 <script>
-import DownloadBar from "./DownloadBar.svelte";
+
 import { env } from '$env/dynamic/public';
 import VideoCardInfo from "./VideoCardInfo.svelte";
 import VideoCardWaiting from "./VideoCardWaiting.svelte";
 import VideoCardError from "./VideoCardError.svelte";
+import {fade} from "svelte/transition";
 
 export let url;
 export let card_id;
@@ -22,7 +23,7 @@ const fetchInfo = (async () => {
 
 </script>
 
-<div class="card">
+<div class="card" transition:fade>
 {#await fetchInfo}
 
     <VideoCardWaiting />

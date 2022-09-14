@@ -30,7 +30,7 @@
 	</button>
 </header>
 {#if cardOpen}
-<div class="card-content" transition:slide>
+<div class="card-content" transition:slide|local>
     <figure class="thumbnail">
         <img src="{data.thumbUrl}" alt="{data.site} video - {data.title}">
     </figure>
