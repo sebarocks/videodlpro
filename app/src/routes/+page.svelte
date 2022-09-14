@@ -17,7 +17,7 @@
 			url: ev.detail,
 			id: newCardId()
 		}
-		videos = [...videos, newVideo];
+		videos = [newVideo, ...videos];
 	}
 
 	function removeVideo(ev){
