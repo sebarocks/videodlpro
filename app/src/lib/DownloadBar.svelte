@@ -21,12 +21,13 @@
 
 	socket.on(`finished.${download_id}`, (filename) => {
 		clearInterval(intervalQuery);
-		status = 'finished';
+		status = 'complete';
 		download_filename = filename;
 	});
 
 	socket.on(`progress.${download_id}`, (data) => {
 		progressData = data;
+		console.log(data.percentage)
 		progress.set(data.percentage / 100);
 	});
 
@@ -54,8 +55,6 @@
 		askProgress();
 		intervalQuery = setInterval(askProgress, 250);
 	}
-
-
 </script>
 
 <div class="downloadbar">
@@ -72,7 +71,7 @@
 			{Math.round(progressData.percentage, 2)}%
         </small>
 		<progress class="progress is-success" value={$progress} />
-	{:else if status == 'finished'}
+	{:else if status == 'complete'}
 		<small class="barinfo">{status} {download_filename}</small>
 		<a href={env.PUBLIC_API_URL + '/api/files/' + download_filename} 
             download target="_blank">
