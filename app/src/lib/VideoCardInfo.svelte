@@ -29,17 +29,19 @@
 		</span>
 	</button>
 </header>
+
 {#if cardOpen}
-<div class="card-content" transition:slide|local>
-    <figure class="thumbnail">
-        <img src="{data.thumbUrl}" alt="{data.site} video - {data.title}">
-    </figure>
-    <div class="details">
-        <small><a href="{data.url}">{data.url}</a></small>
-        <p> {data.title} </p>
+    <div class="card-content" transition:slide|local>
+        <figure class="thumbnail">
+            <img src="{data.thumbUrl}" alt="{data.site} video - {data.title}">
+        </figure>
+        <div class="details">
+            <small><a href="{data.url}">{data.url}</a></small>
+            <p> {data.title} </p>
+        </div>
     </div>
-</div>
 {/if}
+
 <footer class="card-footer">
     <DownloadBar url={data.url} />
 </footer>
@@ -49,8 +51,12 @@
     .card-content{
         display: flex;
         flex-direction: row;
+        padding: 0.8rem;
     }
     .thumbnail{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         width: 40%;
         padding-right: 1rem;
     }
@@ -64,8 +70,8 @@
         text-overflow: '...';
     }
 
-    .thumbnail > img {
-        width: 100%;
+    .thumbnail > img { 
+        max-height: 6em;
     }
     .icon{
         display: inline;

@@ -4,26 +4,20 @@
 
 	let videos = [];
 
-	function newCardId(){
-		if(videos.length > 0){
-			return videos[videos.length - 1].id + 1;
-		}
-		return 1;
-	}
+	let card_id = 0;
 
 	function addUrl(ev) {
 		console.log(`Se agrego url ${ev.detail}`);
 		let newVideo = {
 			url: ev.detail,
-			id: newCardId()
+			id: ++card_id
 		}
 		videos = [newVideo, ...videos];
 	}
 
 	function removeVideo(ev){
 		console.log(`Se elimino tarjeta ${ev.detail}`);
-		let idRem = ev.detail;
-		videos = videos.filter( vid => vid.id != idRem);
+		videos = videos.filter( vid => vid.id != ev.detail);
 	}
 
 </script>

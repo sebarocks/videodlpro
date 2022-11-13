@@ -24,21 +24,15 @@ const fetchInfo = (async () => {
 </script>
 
 <div class="card" transition:fade>
-{#await fetchInfo}
-
-    <VideoCardWaiting />
-
-{:then data}
-
-    {#if !data.detail}
-    <VideoCardInfo on:popCard {data} {card_id}/>
-    {/if}
-
-{:catch error}
-
-    <VideoCardError on:popCard {error} {card_id}/>
-    
-{/await}
+    {#await fetchInfo}
+        <VideoCardWaiting />
+    {:then data}
+        {#if !data.detail}
+            <VideoCardInfo on:popCard {data} {card_id}/>
+        {/if}
+    {:catch error}
+        <VideoCardError on:popCard {error} {card_id}/>
+    {/await}
 </div>
 
 <style>
