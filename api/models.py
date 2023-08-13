@@ -30,5 +30,5 @@ class FormatInfo(BaseModel):
 class VideoProgress(BaseModel):
     url : str
     status : str
-    percentage : str
+    percentage : float
     filename : str
