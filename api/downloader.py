@@ -19,7 +19,6 @@ def processHookInfo(d):
 ydl_opts = {
     'outtmpl': './downloads/%(id)s.%(extractor)s.%(ext)s',
     'quiet': True,
-    'no_color': True,
     'noplaylist': True
 }
 
